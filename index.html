@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Zofia Kreasi Games</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="jquery.js"></script>
+		<script src="js/phaser.js"></script>
+		<style>
+			body{
+				padding: 0px;
+				margin: 0px;
+				background-color: black;
+			}
+			#pausemenu{
+				font-family: arial;
+				display: none;
+				position: fixed;
+				top: 30px;
+				left: 30px;
+				right: 30px;
+				bottom: 30px;
+				background-color: rgba(0, 0, 0 , .75);
+				color: white;
+				text-align: center;
+				padding: 50px;
+				overflow-y: auto;
+				border: 1px solid grey;
+			}
+			#pausemenu h3{
+				margin: 0px;
+				margin-bottom: 10px;
+			}
+			.pauseMenuButtons{
+				background-color: #da7600;
+				padding: 12px;
+				margin: 14px;
+				border: 3px solid #6f1500;
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="zkleaderboard.css">
+	</head>
+	<body>
+		<script src="js/main.js"></script>
+		<div id="pausemenu">
+			<h3>GAME PAUSED</h3>
+			<div onclick="phaserResume()" class="pauseMenuButtons">Resume</div>
+			<div onclick="phaserMainMenu()" class="pauseMenuButtons">Main Menu</div>
+			<div onclick="phaserLeaderboard()" class="pauseMenuButtons">Leaderboard</div>
+			<div onclick="phaserSelectWeapon()" class="pauseMenuButtons">Weapons</div>
+			<div onclick="phaserSelectLevel()" class="pauseMenuButtons">Select Level</div>
+			<div onclick="phaserSettings()" class="pauseMenuButtons">Settings</div>
+		</div>
+		<script>
+			function phaserMainMenu(){
+				document.getElementById("pausemenu").style.display = "none";
+				game.paused = false;
+				goBack();
+			}
+			function phaserResume(){
+				document.getElementById("pausemenu").style.display = "none";
+				game.paused = false;
+			}
+			function phaserSettings(){
+				document.getElementById("pausemenu").style.display = "none";
+				game.paused = false;
+				game.state.start("Settings");
+			}
+			function phaserSelectLevel(){
+				document.getElementById("pausemenu").style.display = "none";
+				game.paused = false;
+				game.state.start("SelectLevel");
+			}
+			function phaserSelectWeapon(){
+				document.getElementById("pausemenu").style.display = "none";
+				game.paused = false;
+				game.state.start("SelectWeapon");
+			}
+			function phaserLeaderboard(){
+				document.getElementById("pausemenu").style.display = "none";
+				game.paused = false;
+				game.state.start("MainMenu");
+				leaderboard();
+			}
+		</script>
+		<script>
+			
+			var banner;
+			var interstitial;
+			var iAppService;
+
+			function main() {
+				
+				//ADMOB COCOON
+				
+				Cocoon.Ad.AdMob.configure({
+					 android: {
+						  banner: "ca-app-pub-5796843895531667/8364575066",
+						  interstitial:"ca-app-pub-5796843895531667/9050970772"
+					 }
+				});
+				
+				banner = Cocoon.Ad.AdMob.createBanner();
+				banner.setLayout( Cocoon.Ad.BannerLayout.TOP_CENTER );
+			
+				banner.on("load", function(){
+				   //alert("Banner loaded " + banner.width, banner.height);
+				});
+				 
+				banner.on("fail", function(){
+				   //alert("Banner failed to load");
+				});
+				 
+				banner.on("show", function(){
+				   //alert("Banner shown a modal content");
+				});
+				 
+				banner.on("dismiss", function(){
+				   //alert("Banner dismissed the modal content");
+				});
+				 
+				banner.on("click", function(){
+				   //alert("Banner clicked");
+				});
+				
+				interstitial = Cocoon.Ad.AdMob.createInterstitial();
+				
+				interstitial.on("load", function(){
+					//alert("Interstitial loaded");
+				});
+				 
+				interstitial.on("fail", function(){
+					//alert("Interstitial failed");
+				});
+				 
+				interstitial.on("show", function(){
+					//alert("Interstitial shown");
+					game.paused = true;
+				});
+				 
+				interstitial.on("dismiss", function(){
+					//alert("Interstitial dismissed");
+					game.paused = false;
+				});
+				
+				//IN APP PURCHASE COCOON
+				
+				// Basic usage, register callbacks first
+				iAppService = Cocoon.InApp;
+				iAppService.on("purchase", {
+					start: function(productId) {
+						//alert("purchase started " + productId);
+					},
+					error: function(productId, error) {
+						//alert("purchase failed " + productId + " error: " + JSON.stringify(error));
+					},
+					complete: function(purchase) {
+						//alert("purchase completed " + JSON.stringify(purchase));
+					}
+				});
+				
+				// Service initialization
+				iAppService.initialize({
+					autofinish: true
+				}, 
+				function(error){
+					if(error){
+						//alert("Error: " + error);
+					}
+				});
+				
+			};
+			document.addEventListener('deviceready', main, false);			
+			
+			function showBanner(){
+				banner.show();
+			}
+			function showInterstitial(){
+				interstitial.show();
+			}
+			
+		</script>
+		<!-- ZK Leaderboard -->
+		<div id="nicknameForm">
+			<h3 style="color: white">Please type in your nickname for this game.</h3>
+			<input id="nickname" placeholder="Nickname"><br>
+			<button onclick="submitNickname()">Ok</button>
+		</div>
+		<div id="leaderboardpage">
+			<h1>Leaderboard</h1>
+			<div id="leaderboard">Loading...</div>
+			<div style="text-align: center"><button onclick="hideLeaderboard()">Close</button></div>
+		</div>
+		<!--
+		<div id="leaderboardpage">
+			<h3>Leaderboard</h3>
+			<div id="leaderboard">Loading...</div>
+		</div>
+		-->
+		<div id="scriptHolder"></script>
+		<script src="zkleaderboardinterface.js"></script>
+		<script src="zkleaderboard.js"></script>
+		<!-- End Of ZK Leaderboard -->
+	</body>
+</html>
