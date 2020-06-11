@@ -80,8 +80,7 @@ ZKGame.MainMenu = {
 		var mainMenuText = game.add.sprite(game.width/2, (game.height/2) - ((game.height/2)/3), "wed");
 		mainMenuText.anchor.setTo(.5);
 		
-		var throphyButton = game.add.button(game.width - 64, game.height - 64, "throphy", leaderboard);
-		throphyButton.anchor.setTo(.5);
+		
 		
 		var playButton = game.add.button(mainMenuText.x - 120, mainMenuText.y + 175, "button", goPlay);
 		playButton.anchor.setTo(.5);
@@ -870,7 +869,7 @@ function checkGameStatus(){
 			appData.score += score;
 			appData.cash += Math.floor(((defenders.length * 50) + score) / 12);
 			saveData();
-			updateScore(appData.cash);
+			
 			game.state.start("WinScreen");
 		}, 1000);
 	}
@@ -1037,11 +1036,3 @@ function goAbout(){
 	game.state.start("About");
 }
 
-function leaderboard(){
-	$("#leaderboardpage").css({ "display" : "block" });
-	updateScore(appData.score);
-	$("#leaderboard").html("Loading...");
-}
-function hideLeaderboard(){
-	$("#leaderboardpage").css({ "display" : "none" });
-}
