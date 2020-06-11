@@ -39,7 +39,6 @@
 				border: 3px solid #6f1500;
 			}
 		</style>
-		<link rel="stylesheet" type="text/css" href="zkleaderboard.css">
 	</head>
 	<body>
 		<script src="js/main.js"></script>
@@ -47,7 +46,7 @@
 			<h3>GAME PAUSED</h3>
 			<div onclick="phaserResume()" class="pauseMenuButtons">Resume</div>
 			<div onclick="phaserMainMenu()" class="pauseMenuButtons">Main Menu</div>
-			<div onclick="phaserLeaderboard()" class="pauseMenuButtons">Leaderboard</div>
+
 			<div onclick="phaserSelectWeapon()" class="pauseMenuButtons">Weapons</div>
 			<div onclick="phaserSelectLevel()" class="pauseMenuButtons">Select Level</div>
 			<div onclick="phaserSettings()" class="pauseMenuButtons">Settings</div>
@@ -81,7 +80,7 @@
 				document.getElementById("pausemenu").style.display = "none";
 				game.paused = false;
 				game.state.start("MainMenu");
-				leaderboard();
+				
 			}
 		</script>
 		<script>
@@ -96,8 +95,8 @@
 				
 				Cocoon.Ad.AdMob.configure({
 					 android: {
-						  banner: "ca-app-pub-5796843895531667/8364575066",
-						  interstitial:"ca-app-pub-5796843895531667/9050970772"
+						  banner: "xxx",
+						  interstitial:"xxx"
 					 }
 				});
 				
@@ -181,26 +180,6 @@
 			}
 			
 		</script>
-		<!-- ZK Leaderboard -->
-		<div id="nicknameForm">
-			<h3 style="color: white">Please type in your nickname for this game.</h3>
-			<input id="nickname" placeholder="Nickname"><br>
-			<button onclick="submitNickname()">Ok</button>
-		</div>
-		<div id="leaderboardpage">
-			<h1>Leaderboard</h1>
-			<div id="leaderboard">Loading...</div>
-			<div style="text-align: center"><button onclick="hideLeaderboard()">Close</button></div>
-		</div>
-		<!--
-		<div id="leaderboardpage">
-			<h3>Leaderboard</h3>
-			<div id="leaderboard">Loading...</div>
-		</div>
-		-->
-		<div id="scriptHolder"></script>
-		<script src="zkleaderboardinterface.js"></script>
-		<script src="zkleaderboard.js"></script>
-		<!-- End Of ZK Leaderboard -->
+		
 	</body>
 </html>
